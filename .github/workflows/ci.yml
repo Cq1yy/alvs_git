@@ -9,6 +9,9 @@ on:
 jobs:
   lint-and-test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: lab9_fastapi_postgres
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
