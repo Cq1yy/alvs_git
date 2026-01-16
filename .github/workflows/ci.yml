@@ -12,6 +12,8 @@ jobs:
     defaults:
       run:
         working-directory: lab9_fastapi_postgres
+    env:
+      PYTHONPATH: ${{ github.workspace }}/lab9_fastapi_postgres
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
