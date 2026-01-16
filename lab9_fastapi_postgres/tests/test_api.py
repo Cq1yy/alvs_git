@@ -1,10 +1,10 @@
 import os
 
 import pytest
+os.environ["DATABASE_URL"] = "sqlite+pysqlite:///:memory:"
 from fastapi.testclient import TestClient
 
 # В тестах используем SQLite, чтобы они работали без внешней БД.
-os.environ["DATABASE_URL"] = "sqlite+pysqlite:///:memory:"
 
 from app.main import app  # noqa: E402
 from app.db import init_db  # noqa: E402
