@@ -4,7 +4,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 # В тестах используем SQLite, чтобы они работали без внешней БД.
-os.environ["DATABASE_URL"] = "sqlite+pysqlite:///:memory:"
+os.environ["DATABASE_URL"] = "sqlite+pysqlite:///.test.db"
 
 from app.db import init_db  # noqa: E402
 from app.main import app  # noqa: E402
