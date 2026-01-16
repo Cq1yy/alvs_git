@@ -1,4 +1,5 @@
 import logging
+from logging.handlers import RotatingFileHandler
 from typing import Generator
 
 from fastapi import Depends, FastAPI, HTTPException, Request
@@ -14,6 +15,32 @@ from .schemas import LoginRequest, UserCreate, UserOut
 
 logging.basicConfig(level=getattr(logging, get_log_level().upper(), logging.INFO))
 logger = logging.getLogger("app")
+
+
+# Отдельный логгер для авторизации (пишем в файл auth.log)
+def _setup_auth_logger() -> logging.Logger:
+    level = getattr(logging, get_log_level().upper(), logging.INFO)
+
+    auth_logger = logging.getLogger("auth")
+    auth_logger.setLevel(level)
+
+    # Чтобы при автоперезапуске (uvicorn --reload) не навешивались дублирующие хэндлеры
+    if not any(isinstance(h, RotatingFileHandler) for h in auth_logger.handlers):
+        handler = RotatingFileHandler(
+            "auth.log",
+            maxBytes=1_000_000,  # 1 MB
+            backupCount=3,
+            encoding="utf-8",
+        )
+        handler.setFormatter(logging.Formatter("%(asctime)s | %(levelname)s | %(message)s"))
+        auth_logger.addHandler(handler)
+
+    # Не дублируем записи в основном logger'е (stdout)
+    auth_logger.propagate = False
+    return auth_logger
+
+
+auth_logger = _setup_auth_logger()
 
 app = FastAPI(title="Lab 9 — FastAPI + PostgreSQL")
 templates = Jinja2Templates(directory="app/templates")
@@ -54,14 +81,15 @@ def api_create_user(payload: UserCreate, db: Session = Depends(get_db)) -> UserO
 
 @app.post("/api/auth/login")
 def login(payload: LoginRequest, request: Request) -> dict:
-    # Демонстрация логирования для лабораторной (можно доработать в отдельной ветке)
     client_ip = request.client.host if request.client else "unknown"
-    logger.info("Login attempt: username=%s ip=%s", payload.username, client_ip)
+
+    # Пишем авторизационные события в auth.log
+    auth_logger.info("LOGIN ATTEMPT | username=%s | ip=%s", payload.username, client_ip)
 
     # Демо-проверка (в реальном проекте тут была бы проверка пароля)
     if payload.password != "secret":
-        logger.warning("Login failed: username=%s ip=%s", payload.username, client_ip)
+        auth_logger.warning("LOGIN FAIL | username=%s | ip=%s", payload.username, client_ip)
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
-    logger.info("Login success: username=%s ip=%s", payload.username, client_ip)
+    auth_logger.info("LOGIN OK | username=%s | ip=%s", payload.username, client_ip)
     return {"status": "ok", "username": payload.username}
