@@ -20,6 +20,7 @@ jobs:
 
       - name: Build and push
         uses: docker/build-push-action@v6
+        file: ./lab9_fastapi_postgres/Dockerfile
         with:
           context: .
           push: true
