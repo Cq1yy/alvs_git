@@ -6,7 +6,7 @@
 - Тесты (pytest)
 - CI/CD (GitHub Actions: ruff + pytest)
 
-## Быстрый старт (Docker)+
+## Быстрый старт (Docker)
 ```bash
 docker compose up --build
 ```
