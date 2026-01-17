@@ -2,11 +2,11 @@
 
 Минимальный учебный проект для лабораторной работы:
 - Web интерфейс (HTML главная страница)
-- PostgreSQL (табLица users, добавление/просмотр)
+- PostgreSQL (таблица users, добавление/просмотр)
 - Тесты (pytest)
 - CI/CD (GitHub Actions: ruff + pytest)
 
-## Быстрый старт (Docker)
+## Быстрый старт (Docker)+
 ```bash
 docker compose up --build
 ```
