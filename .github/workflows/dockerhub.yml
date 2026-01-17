@@ -25,5 +25,5 @@ jobs:
           file: ./lab9_fastapi_postgres/Dockerfile
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/myapp:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/alvs_app:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/alvs_app:${{ github.sha }}
