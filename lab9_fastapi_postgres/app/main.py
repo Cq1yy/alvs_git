@@ -1,7 +1,7 @@
 import logging
 from logging.handlers import RotatingFileHandler
 from typing import Generator
-
+from prometheus_fastapi_instrumentator import Instrumentator
 from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
@@ -43,6 +43,7 @@ def _setup_auth_logger() -> logging.Logger:
 auth_logger = _setup_auth_logger()
 
 app = FastAPI(title="Lab 9 — FastAPI + PostgreSQL")
+Instrumentator().instrument(app).expose(app, endpoint="/metrics")
 templates = Jinja2Templates(directory="app/templates")
 
 
