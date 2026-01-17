@@ -14,7 +14,7 @@ services:
       retries: 10
 
   web:
-    build: .
+    image: formak/alvs_app:latest
     environment:
       DATABASE_URL: postgresql+psycopg2://postgres:postgres@db:5432/app
       LOG_LEVEL: INFO
