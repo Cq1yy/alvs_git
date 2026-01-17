@@ -2,7 +2,7 @@
 
 Минимальный учебный проект для лабораторной работы:
 - Web интерфейс (HTML главная страница)
-- PostgreSQL (таблица users, добавление/просмотр)
+- PostgreSQL (табLица users, добавление/просмотр)
 - Тесты (pytest)
 - CI/CD (GitHub Actions: ruff + pytest)
 
